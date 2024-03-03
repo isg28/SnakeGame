@@ -14,10 +14,10 @@ import java.util.ArrayList;
 class Snake{
 
     // The location in the grid of all the segments
-    private ArrayList<Point> segmentLocations;
+    protected ArrayList<Point> segmentLocations;
 
     // How big is each segment of the snake?
-    private int mSegmentSize;
+    protected int mSegmentSize;
 
     // How big is the entire grid
     private Point mMoveRange;
@@ -27,21 +27,25 @@ class Snake{
     private int halfWayPoint;
 
     // For tracking movement Heading
-    private enum Heading {
+    protected enum Heading {
         UP, RIGHT, DOWN, LEFT
     }
 
     // Start by heading to the right
-    private Heading heading = Heading.RIGHT;
+    protected Heading heading = Heading.RIGHT;
 
     // A bitmap for each direction the head can face
-    private Bitmap mBitmapHeadRight;
-    private Bitmap mBitmapHeadLeft;
-    private Bitmap mBitmapHeadUp;
-    private Bitmap mBitmapHeadDown;
+    protected Bitmap mBitmapHeadRight;
+    protected Bitmap mBitmapHeadLeft;
+    protected Bitmap mBitmapHeadUp;
+    protected Bitmap mBitmapHeadDown;
 
     // A bitmap for the body
-    private Bitmap mBitmapBody;
+    protected Bitmap mBitmapBody;
+
+    public Heading getHeading(){
+        return heading;
+    }
 
 
     Snake(Context context, Point mr, int ss) {
@@ -203,56 +207,6 @@ class Snake{
             return true;
         }
         return false;
-    }
-    void draw(Canvas canvas, Paint paint) {
-
-        // Don't run this code if ArrayList has nothing in it
-        if (!segmentLocations.isEmpty()) {
-            // All the code from this method goes here
-            // Draw the head
-            switch (heading) {
-                case RIGHT:
-                    canvas.drawBitmap(mBitmapHeadRight,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-
-                case LEFT:
-                    canvas.drawBitmap(mBitmapHeadLeft,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-
-                case UP:
-                    canvas.drawBitmap(mBitmapHeadUp,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-
-                case DOWN:
-                    canvas.drawBitmap(mBitmapHeadDown,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-            }
-
-            // Draw the snake body one block at a time
-            for (int i = 1; i < segmentLocations.size(); i++) {
-                canvas.drawBitmap(mBitmapBody,
-                        segmentLocations.get(i).x
-                                * mSegmentSize,
-                        segmentLocations.get(i).y
-                                * mSegmentSize, paint);
-            }
-        }
     }
 
 

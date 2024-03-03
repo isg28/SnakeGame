@@ -49,6 +49,7 @@ class SnakeGame extends SurfaceView implements Runnable{
     protected Apple mApple;
 
     protected DrawApple drawApple;
+    protected DrawSnake drawSnake;
 
 
 
@@ -109,6 +110,7 @@ class SnakeGame extends SurfaceView implements Runnable{
                 blockSize);
 
         drawApple = new DrawApple(mApple.getBitmap(), mApple.getLocation(), mApple.getBlockSize());
+        drawSnake = new DrawSnake(mSnake);
 
     }
 
@@ -219,9 +221,8 @@ class SnakeGame extends SurfaceView implements Runnable{
             mCanvas.drawText("" + mScore, 20, 120, mPaint);
 
             // Draw the apple and the snake
-            ///mApple.draw(mCanvas, mPaint);
             drawApple.draw(mCanvas,mPaint);
-            mSnake.draw(mCanvas, mPaint);
+            drawSnake.draw(mCanvas, mPaint);
 
             // Draw some text while paused
             if(mPaused){
