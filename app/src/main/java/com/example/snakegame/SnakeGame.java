@@ -39,14 +39,19 @@ class SnakeGame extends SurfaceView implements Runnable{
     private int mScore;
 
     // Objects for drawing
-    private Canvas mCanvas;
-    private SurfaceHolder mSurfaceHolder;
-    private Paint mPaint;
+    protected Canvas mCanvas;
+    protected SurfaceHolder mSurfaceHolder;
+    protected Paint mPaint;
 
     // A snake ssss
-    private Snake mSnake;
+    protected Snake mSnake;
     // And an apple
-    private Apple mApple;
+    protected Apple mApple;
+
+    protected DrawApple drawApple;
+
+
+
 
 
     // This is the constructor method that gets called
@@ -102,6 +107,8 @@ class SnakeGame extends SurfaceView implements Runnable{
                 new Point(NUM_BLOCKS_WIDE,
                         mNumBlocksHigh),
                 blockSize);
+
+        drawApple = new DrawApple(mApple.getBitmap(), mApple.getLocation(), mApple.getBlockSize());
 
     }
 
@@ -196,6 +203,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     // Do all the drawing
     public void draw() {
+
         // Get a lock on the mCanvas
         if (mSurfaceHolder.getSurface().isValid()) {
             mCanvas = mSurfaceHolder.lockCanvas();
@@ -211,7 +219,8 @@ class SnakeGame extends SurfaceView implements Runnable{
             mCanvas.drawText("" + mScore, 20, 120, mPaint);
 
             // Draw the apple and the snake
-            mApple.draw(mCanvas, mPaint);
+            ///mApple.draw(mCanvas, mPaint);
+            drawApple.draw(mCanvas,mPaint, mApple);
             mSnake.draw(mCanvas, mPaint);
 
             // Draw some text while paused

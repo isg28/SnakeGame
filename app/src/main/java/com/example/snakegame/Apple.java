@@ -8,7 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import java.util.Random;
 
-class Apple {
+class Apple{
 
     // The location of the apple on the grid
     // Not in pixels
@@ -39,6 +39,14 @@ class Apple {
         mBitmapApple = Bitmap.createScaledBitmap(mBitmapApple, s, s, false);
     }
 
+    public Bitmap getBitmap() {
+        return mBitmapApple;
+    }
+
+    public int getBlockSize() {
+        return mSize;
+    }
+
     // This is called every time an apple is eaten
     void spawn(){
         // Choose two random values and place the apple
@@ -53,11 +61,5 @@ class Apple {
         return location;
     }
 
-    // Draw the apple
-    void draw(Canvas canvas, Paint paint){
-        canvas.drawBitmap(mBitmapApple,
-                location.x * mSize, location.y * mSize, paint);
-
-    }
 
 }
