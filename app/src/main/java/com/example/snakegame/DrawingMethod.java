@@ -9,23 +9,17 @@ public abstract class DrawingMethod {
     protected SurfaceHolder mSurfaceHolder;
     protected Paint mPaint;
 
-    // A snake ssss
-    protected Snake mSnake;
-    // And an apple
-    protected Apple mApple;
 
     public DrawingMethod(Canvas mCanvas, SurfaceHolder mSurfaceHolder, Paint mPaint, Snake mSnake, Apple mApple){
         this.mCanvas = mCanvas;
         this.mSurfaceHolder = mSurfaceHolder;
         this.mPaint = mPaint;
-        this.mSnake = mSnake;
-        this.mApple = mApple;
     }
 
     public DrawingMethod(){
 
     }
 
-    public abstract void draw(Canvas mCanvas, Paint mPaint, Apple mApple);
+    public abstract void draw(Canvas mCanvas, Paint mPaint);
 
 }

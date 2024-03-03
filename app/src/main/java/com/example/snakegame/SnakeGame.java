@@ -220,7 +220,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             // Draw the apple and the snake
             ///mApple.draw(mCanvas, mPaint);
-            drawApple.draw(mCanvas,mPaint, mApple);
+            drawApple.draw(mCanvas,mPaint);
             mSnake.draw(mCanvas, mPaint);
 
             // Draw some text while paused
