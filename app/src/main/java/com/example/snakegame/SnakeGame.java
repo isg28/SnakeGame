@@ -51,6 +51,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     protected DrawApple drawApple;
     protected DrawSnake drawSnake;
+    private boolean mNewGame = true;
 
     // This is the constructor method that gets called
     // from SnakeActivity
@@ -121,11 +122,13 @@ class SnakeGame extends SurfaceView implements Runnable{
         // Get the apple ready for dinner
         mApple.spawn();
 
-        // Reset the mScore
-        mScore = 0;
+        if(mNewGame){
+            mScore = 0;
+        }
 
         // Setup mNextFrameTime so an update can triggered
         mNextFrameTime = System.currentTimeMillis();
+        mNewGame = false;
     }
 
 
@@ -195,6 +198,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             mSP.play(mCrashID, 1, 1, 0, 0, 1);
 
             mPaused =true;
+            mNewGame = true;
         }
 
     }
@@ -233,6 +237,13 @@ class SnakeGame extends SurfaceView implements Runnable{
         mPaint.setTextSize(60);
         mCanvas.drawText("Danica Galang & Isabel Santoyo-Garcia", 1150, 85, mPaint);
 
+        if(!mPaused){
+            mPaint.setColor(Color.argb(255, 25, 25, 112));
+            mPaint.setTextSize(60);
+            mCanvas.drawText("Pause", 20, 200, mPaint);
+
+        }
+
         // Draw the apple and the snake
         drawApple.draw(mCanvas,mPaint);
         drawSnake.draw(mCanvas, mPaint);
@@ -255,6 +266,8 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
+        int touchX = (int) motionEvent.getX();
+        int touchY = (int) motionEvent.getY();
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 if (mPaused) {
@@ -263,17 +276,28 @@ class SnakeGame extends SurfaceView implements Runnable{
 
                     // Don't want to process snake direction for this tap
                     return true;
+                } else {
+                    if (isTouchWithinPauseText(touchX, touchY)) {
+                        mPaused = true;
+                        return true;
+                    } else {
+                        mSnake.switchHeading(motionEvent);
+                    }
                 }
-
-                // Let the Snake class handle the input
-                mSnake.switchHeading(motionEvent);
                 break;
-
-            default:
-                break;
-
         }
         return true;
+    }
+
+    //Maps out a rectangular area for the "Pause" text
+    private boolean isTouchWithinPauseText(int touchX, int touchY) {
+        int pauseTextLeft = 20;
+        int pauseTextTop = 140;
+        int pauseTextRight = pauseTextLeft + (int) mPaint.measureText("Pause");
+        int pauseTextBottom = pauseTextTop + 60;
+
+        return touchX >= pauseTextLeft && touchX <= pauseTextRight &&
+                touchY >= pauseTextTop && touchY <= pauseTextBottom;
     }
 
 
@@ -291,7 +315,10 @@ class SnakeGame extends SurfaceView implements Runnable{
     // Start the thread
     public void resume() {
         mPlaying = true;
-        mThread = new Thread(this);
-        mThread.start();
+        if (mPaused) {
+            mThread = new Thread(this);
+            mThread.start();
+            mNewGame = false;
+        }
     }
 }
