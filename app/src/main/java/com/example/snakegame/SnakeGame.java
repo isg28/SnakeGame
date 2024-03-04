@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -50,10 +51,6 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     protected DrawApple drawApple;
     protected DrawSnake drawSnake;
-
-
-
-
 
     // This is the constructor method that gets called
     // from SnakeActivity
@@ -210,39 +207,50 @@ class SnakeGame extends SurfaceView implements Runnable{
         if (mSurfaceHolder.getSurface().isValid()) {
             mCanvas = mSurfaceHolder.lockCanvas();
 
-            // Fill the screen with a color
-            mCanvas.drawColor(Color.argb(255, 26, 128, 182));
-
-            // Set the size and color of the mPaint for the text
-            mPaint.setColor(Color.argb(255, 255, 255, 255));
-            mPaint.setTextSize(120);
-
-            // Draw the score
-            mCanvas.drawText("" + mScore, 20, 120, mPaint);
-
-            // Draw the apple and the snake
-            drawApple.draw(mCanvas,mPaint);
-            drawSnake.draw(mCanvas, mPaint);
+            GameDetails();
 
             // Draw some text while paused
             if(mPaused){
-
-                // Set the size and color of the mPaint for the text
-                mPaint.setColor(Color.argb(255, 255, 255, 255));
-                mPaint.setTextSize(250);
-
-                // Draw the message
-                // We will give this an international upgrade soon
-                //mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-                mCanvas.drawText(getResources().
-                                getString(R.string.tap_to_play),
-                        200, 700, mPaint);
+                PauseScreenText();
             }
 
 
             // Unlock the mCanvas and reveal the graphics for this frame
             mSurfaceHolder.unlockCanvasAndPost(mCanvas);
         }
+    }
+    public void GameDetails(){
+        // Fill the screen with a color
+        mCanvas.drawColor(Color.argb(255, 155, 184, 237));
+        // Set the size and color of the mPaint for the text
+        mPaint.setColor(Color.argb(255, 255, 255, 255));
+        mPaint.setTextSize(120);
+
+        // Draw the score
+        mPaint.setColor(Color.argb(255, 25, 25, 112));
+        mCanvas.drawText("" + mScore, 20, 120, mPaint);
+
+        mPaint.setTextSize(60);
+        mCanvas.drawText("Danica Galang & Isabel Santoyo-Garcia", 1150, 85, mPaint);
+
+        // Draw the apple and the snake
+        drawApple.draw(mCanvas,mPaint);
+        drawSnake.draw(mCanvas, mPaint);
+
+    }
+    public void PauseScreenText(){
+        // Set the size and color of the mPaint for the text
+        mPaint.setColor(Color.argb(255, 96, 130, 182));
+        mPaint.setTextSize(250);
+
+        // Draw the message
+        // We will give this an international upgrade soon
+        //mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
+        mCanvas.drawText(getResources().
+                        getString(R.string.tap_to_play),
+                200, 700, mPaint);
+        mPaint.setTypeface(Typeface.DEFAULT_BOLD);
+
     }
 
     @Override
