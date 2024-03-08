@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
-class Snake implements Resettable{
+public class Snake implements Resettable{
 
     // The location in the grid of all the segments
     protected ArrayList<Point> segmentLocations;
@@ -48,15 +48,15 @@ class Snake implements Resettable{
     }
 
 
-    Snake(Context context, Point mr, int ss) {
+    public Snake(Context context, Point moveRange, int segmentSize) {
 
         // Initialize our ArrayList
         segmentLocations = new ArrayList<>();
 
         // Initialize the segment size and movement
         // range from the passed in parameters
-        mSegmentSize = ss;
-        mMoveRange = mr;
+        mSegmentSize = segmentSize;
+        mMoveRange = moveRange;
 
         // Create and scale the bitmaps
         mBitmapHeadRight = BitmapFactory
@@ -80,7 +80,7 @@ class Snake implements Resettable{
         // in the correct direction
         mBitmapHeadRight = Bitmap
                 .createScaledBitmap(mBitmapHeadRight,
-                        ss, ss, false);
+                        segmentSize, segmentSize, false);
 
         // A matrix for scaling
         Matrix matrix = new Matrix();
@@ -88,20 +88,20 @@ class Snake implements Resettable{
 
         mBitmapHeadLeft = Bitmap
                 .createBitmap(mBitmapHeadRight,
-                        0, 0, ss, ss, matrix, true);
+                        0, 0, segmentSize, segmentSize, matrix, true);
 
         // A matrix for rotating
         matrix.preRotate(-90);
         mBitmapHeadUp = Bitmap
                 .createBitmap(mBitmapHeadRight,
-                        0, 0, ss, ss, matrix, true);
+                        0, 0, segmentSize, segmentSize, matrix, true);
 
         // Matrix operations are cumulative
         // so rotate by 180 to face down
         matrix.preRotate(180);
         mBitmapHeadDown = Bitmap
                 .createBitmap(mBitmapHeadRight,
-                        0, 0, ss, ss, matrix, true);
+                        0, 0, segmentSize, segmentSize, matrix, true);
 
         // Create and scale the body
         mBitmapBody = BitmapFactory
@@ -110,11 +110,11 @@ class Snake implements Resettable{
 
         mBitmapBody = Bitmap
                 .createScaledBitmap(mBitmapBody,
-                        ss, ss, false);
+                        segmentSize, segmentSize, false);
 
         // The halfway point across the screen in pixels
         // Used to detect which side of screen was pressed
-        halfWayPoint = mr.x * ss / 2;
+        halfWayPoint = moveRange.x * segmentSize / 2;
     }
 
     // Get the snake ready for a new game

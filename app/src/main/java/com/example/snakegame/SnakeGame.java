@@ -17,27 +17,27 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import java.io.IOException;
 
-class SnakeGame extends SurfaceView implements Runnable{
+public class SnakeGame extends SurfaceView implements Runnable{
 
     // Objects for the game loop/thread
     private Thread mThread = null;
     // Control pausing between updates
-    private long mNextFrameTime;
+    protected long mNextFrameTime;
     // Is the game currently playing and or paused?
     private volatile boolean mPlaying = false;
-    private volatile boolean mPaused = true;
+    protected volatile boolean mPaused = true;
 
     // for playing sound effects
-    private SoundPool mSP;
-    private int mEat_ID = -1;
-    private int mCrashID = -1;
+    protected SoundPool mSP;
+    protected int mEat_ID = -1;
+    protected int mCrashID = -1;
 
     // The size in segments of the playable area
     private final int NUM_BLOCKS_WIDE = 40;
     private int mNumBlocksHigh;
 
     // How many points does the player have
-    private int mScore;
+    protected int mScore;
 
     // Objects for drawing
     protected Canvas mCanvas;
@@ -51,7 +51,8 @@ class SnakeGame extends SurfaceView implements Runnable{
 
     protected DrawApple drawApple;
     protected DrawSnake drawSnake;
-    private boolean mNewGame = true;
+    protected boolean mNewGame = true;
+    private UpdateSnakeGame updateSnakeGame;
 
     // This is the constructor method that gets called
     // from SnakeActivity
@@ -115,6 +116,8 @@ class SnakeGame extends SurfaceView implements Runnable{
         drawApple = new DrawApple(mApple.getBitmap(), mApple.getLocation(), mApple.getBlockSize());
         drawSnake = new DrawSnake(mSnake);
 
+        updateSnakeGame = new UpdateSnakeGame(this);
+
     }
 
 
@@ -143,71 +146,14 @@ class SnakeGame extends SurfaceView implements Runnable{
         while (mPlaying) {
             if(!mPaused) {
                 // Update 10 times a second
-                if (updateRequired()) {
-                    update();
+                if (updateSnakeGame.updateRequired()) {
+                    updateSnakeGame.update();
                 }
             }
 
             draw();
         }
     }
-
-
-    // Check to see if it is time for an update
-    public boolean updateRequired() {
-
-        // Run at 10 frames per second
-        final long TARGET_FPS = 10;
-        // There are 1000 milliseconds in a second
-        final long MILLIS_PER_SECOND = 1000;
-
-        // Are we due to update the frame
-        if(mNextFrameTime <= System.currentTimeMillis()){
-            // Tenth of a second has passed
-
-            // Setup when the next update will be triggered
-            mNextFrameTime =System.currentTimeMillis()
-                    + MILLIS_PER_SECOND / TARGET_FPS;
-
-            // Return true so that the update and draw
-            // methods are executed
-            return true;
-        }
-
-        return false;
-    }
-
-
-    // Update all the game objects
-    public void update() {
-
-        // Move the snake
-        mSnake.move();
-
-        // Did the head of the snake eat the apple?
-        if(mSnake.checkDinner(mApple.getLocation())){
-            // This reminds me of Edge of Tomorrow.
-            // One day the apple will be ready!
-            mApple.spawn();
-
-            // Add to  mScore
-            mScore = mScore + 1;
-
-            // Play a sound
-            mSP.play(mEat_ID, 1, 1, 0, 0, 1);
-        }
-
-        // Did the snake die?
-        if (mSnake.detectDeath()) {
-            // Pause the game ready to start again
-            mSP.play(mCrashID, 1, 1, 0, 0, 1);
-
-            mPaused =true;
-            mNewGame = true;
-        }
-
-    }
-
 
     // Do all the drawing
     public void draw() {
