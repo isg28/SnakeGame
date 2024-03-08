@@ -12,10 +12,7 @@ public class DrawSnake extends DrawingMethod{
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        // Don't run this code if ArrayList has nothing in it
         if (!snake.segmentLocations.isEmpty()) {
-            // All the code from this method goes here
-            // Draw the head
             switch (snake.getHeading()) {
                 case RIGHT:
                     canvas.drawBitmap(snake.mBitmapHeadRight,
