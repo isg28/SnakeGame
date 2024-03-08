@@ -53,6 +53,7 @@ public class SnakeGame extends SurfaceView implements Runnable{
     protected DrawSnake drawSnake;
     protected boolean mNewGame = true;
     private UpdateSnakeGame updateSnakeGame;
+    private UpdateGameMethod updateGameMethod;
 
     // This is the constructor method that gets called
     // from SnakeActivity
@@ -117,6 +118,7 @@ public class SnakeGame extends SurfaceView implements Runnable{
         drawSnake = new DrawSnake(mSnake);
 
         updateSnakeGame = new UpdateSnakeGame(this);
+        updateGameMethod = new UpdateGameMethod(this);
 
     }
 
@@ -162,57 +164,17 @@ public class SnakeGame extends SurfaceView implements Runnable{
         if (mSurfaceHolder.getSurface().isValid()) {
             mCanvas = mSurfaceHolder.lockCanvas();
 
-            GameDetails();
+            updateGameMethod.GameDetails();
 
             // Draw some text while paused
             if(mPaused){
-                PauseScreenText();
+                updateGameMethod.PauseScreenText();
             }
 
 
             // Unlock the mCanvas and reveal the graphics for this frame
             mSurfaceHolder.unlockCanvasAndPost(mCanvas);
         }
-    }
-    public void GameDetails(){
-        // Fill the screen with a color
-        mCanvas.drawColor(Color.argb(255, 155, 184, 237));
-        // Set the size and color of the mPaint for the text
-        mPaint.setColor(Color.argb(255, 255, 255, 255));
-        mPaint.setTextSize(120);
-
-        // Draw the score
-        mPaint.setColor(Color.argb(255, 25, 25, 112));
-        mCanvas.drawText("" + mScore, 20, 120, mPaint);
-
-        mPaint.setTextSize(60);
-        mCanvas.drawText("Danica Galang & Isabel Santoyo-Garcia", 1150, 85, mPaint);
-
-        if(!mPaused){
-            mPaint.setColor(Color.argb(255, 25, 25, 112));
-            mPaint.setTextSize(60);
-            mCanvas.drawText("Pause", 20, 200, mPaint);
-
-        }
-
-        // Draw the apple and the snake
-        drawApple.draw(mCanvas,mPaint);
-        drawSnake.draw(mCanvas, mPaint);
-
-    }
-    public void PauseScreenText(){
-        // Set the size and color of the mPaint for the text
-        mPaint.setColor(Color.argb(255, 96, 130, 182));
-        mPaint.setTextSize(250);
-
-        // Draw the message
-        // We will give this an international upgrade soon
-        //mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-        mCanvas.drawText(getResources().
-                        getString(R.string.tap_to_play),
-                200, 700, mPaint);
-        mPaint.setTypeface(Typeface.DEFAULT_BOLD);
-
     }
 
     @Override
@@ -228,7 +190,7 @@ public class SnakeGame extends SurfaceView implements Runnable{
                     // Don't want to process snake direction for this tap
                     return true;
                 } else {
-                    if (isTouchWithinPauseText(touchX, touchY)) {
+                    if (updateGameMethod.isTouchWithinPauseText(touchX, touchY)) {
                         mPaused = true;
                         return true;
                     } else {
@@ -239,18 +201,6 @@ public class SnakeGame extends SurfaceView implements Runnable{
         }
         return true;
     }
-
-    //Maps out a rectangular area for the "Pause" text
-    private boolean isTouchWithinPauseText(int touchX, int touchY) {
-        int pauseTextLeft = 20;
-        int pauseTextTop = 140;
-        int pauseTextRight = pauseTextLeft + (int) mPaint.measureText("Pause");
-        int pauseTextBottom = pauseTextTop + 60;
-
-        return touchX >= pauseTextLeft && touchX <= pauseTextRight &&
-                touchY >= pauseTextTop && touchY <= pauseTextBottom;
-    }
-
 
     // Stop the thread
     public void pause() {
