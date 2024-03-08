@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
-class Snake{
+class Snake implements Resettable{
 
     // The location in the grid of all the segments
     protected ArrayList<Point> segmentLocations;
@@ -118,7 +118,8 @@ class Snake{
     }
 
     // Get the snake ready for a new game
-    void reset(int w, int h) {
+    @Override
+    public void reset(int w, int h) {
 
         // Reset the heading
         heading = Heading.RIGHT;
