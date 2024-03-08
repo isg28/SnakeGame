@@ -92,6 +92,11 @@ class SnakeGame extends SurfaceView implements Runnable{
             // Error
         }
 
+        InitializeObjects(context, blockSize);
+
+    }
+
+    public void InitializeObjects(Context context, int blockSize){
         // Initialize the drawing objects
         mSurfaceHolder = getHolder();
         mPaint = new Paint();
