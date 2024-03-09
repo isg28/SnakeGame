@@ -86,45 +86,45 @@ public class Snake implements Resettable{
     }
 
     @Override
-    public void reset(int w, int h) {
+    public void reset(int width, int height) {
 
         heading = Heading.RIGHT;
 
         segmentLocations.clear();
 
-        segmentLocations.add(new Point(w / 2, h / 2));
+        segmentLocations.add(new Point(width / 2, height / 2));
     }
 
 
-    void move() {
+    public void move() {
         for (int i = segmentLocations.size() - 1; i > 0; i--) {
             segmentLocations.get(i).x = segmentLocations.get(i - 1).x;
             segmentLocations.get(i).y = segmentLocations.get(i - 1).y;
         }
 
-        Point p = segmentLocations.get(0);
+        Point position = segmentLocations.get(0);
 
         switch (heading) {
             case UP:
-                p.y--;
+                position.y--;
                 break;
 
             case RIGHT:
-                p.x++;
+                position.x++;
                 break;
 
             case DOWN:
-                p.y++;
+                position.y++;
                 break;
 
             case LEFT:
-                p.x--;
+                position.x--;
                 break;
         }
 
     }
 
-    boolean detectDeath() {
+    public boolean detectDeath() {
         boolean dead = false;
 
         if (segmentLocations.get(0).x == -1 ||
@@ -145,9 +145,9 @@ public class Snake implements Resettable{
         return dead;
     }
 
-    boolean checkDinner(Point l) {
-        if (segmentLocations.get(0).x == l.x &&
-                segmentLocations.get(0).y == l.y) {
+    public boolean checkDinner(Point location) {
+        if (segmentLocations.get(0).x == location.x &&
+                segmentLocations.get(0).y == location.y) {
 
             segmentLocations.add(new Point(-10, -10));
             return true;
@@ -157,7 +157,7 @@ public class Snake implements Resettable{
 
 
     // Handle changing direction
-    void switchHeading(MotionEvent motionEvent) {
+    public void switchHeading(MotionEvent motionEvent) {
 
         // Is the tap on the right hand side?
         if (motionEvent.getX() >= halfWayPoint) {

@@ -8,20 +8,20 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import java.util.Random;
 
-class Apple{
+public class Apple{
     private Point location = new Point();
     private Point mSpawnRange;
     private int mSize;
     private Bitmap mBitmapApple;
 
-    Apple(Context context, Point sr, int s){
-        mSpawnRange = sr;
-        mSize = s;
+    public Apple(Context context, Point spawnRange, int size){
+        mSpawnRange = spawnRange;
+        mSize = size;
         location.x = -10;
 
         mBitmapApple = BitmapFactory.decodeResource(context.getResources(), R.drawable.apple);
 
-        mBitmapApple = Bitmap.createScaledBitmap(mBitmapApple, s, s, false);
+        mBitmapApple = Bitmap.createScaledBitmap(mBitmapApple, size, size, false);
     }
 
     public Bitmap getBitmap() {
@@ -32,7 +32,7 @@ class Apple{
         return mSize;
     }
 
-    void spawn(){
+    public void spawn(){
         Random random = new Random();
         location.x = random.nextInt(mSpawnRange.x) + 1;
         location.y = random.nextInt(mSpawnRange.y - 1) + 1;
